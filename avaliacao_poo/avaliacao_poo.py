@@ -11,9 +11,9 @@ veiculos={"BCC009":{"marca":"Fiat", "modelo":"UNO", "ano":"2003",
          "BCC008":{"marca":"Fiat", "modelo":"Argo", "ano":"2003", 
                    "placa":"BCC007", "chassi":"36563652","cor":"Branco","km":500}  }
 
-motoristas={"11111":{"nome":"François", "CPF":"11111", "RG":"223212", "CNH":"34221"},
-            "22222":{"nome":"Ana", "CPF":"22222", "RG":"223212", "CNH":"34221"},
-            "33333":{"nome":"MAria", "CPF":"33333", "RG":"223212", "CNH":"34221"}}
+motoristas={"11111":{"nome":"François", "CPF":"11111", "RG":"223212", "CNH":"34221","viagem_total":2},
+            "22222":{"nome":"Ana", "CPF":"22222", "RG":"223212", "CNH":"34221","viagem_total":3},
+            "33333":{"nome":"MAria", "CPF":"33333", "RG":"223212", "CNH":"34221","viagem_total":2}}
 
 viagens={1:{"destino":"Bacabal", 
                 "origem":"Caxias", 
@@ -150,7 +150,7 @@ def menu():
                 cod_manutencao+=1
         pass
         if opcao == 6:
-           
+           relatorio()
            pass
     
 
@@ -161,8 +161,9 @@ def cad_motorista():
     rg=input('informe seu rg')
     cnh=input('informe sua cnh') 
 
+
     motorista={
-        "NOME":nome,"CPF":cpf,"RG":rg,"CNH":cnh
+        "NOME":nome,"CPF":cpf,"RG":rg,"CNH":cnh,"viagem_total":0
     }
     motoristas[cpf]=motorista 
     print(motoristas)
@@ -215,9 +216,9 @@ def pesquisar_veiculos(placa):
 def editar_veiculos(veiculo):
 
     marca = input('Digite a marca do veiculo:')
-    modelo= input('Insira seu CPF:')  
-    placa=input('informe seu rg')
-    chassi=input('informe sua cnh') 
+    modelo= input('Insira o modelo:')  
+    placa=input('informe placa')
+    chassi=input('informe a chassi') 
     cor=input('informe a cor do veiculo')
     km=input('Quilometros rodados')
     veiculo={
@@ -242,6 +243,7 @@ def cad_viagem():
     motorista=pesquisar_motorista(cpf)
     placa=input("informe a placa do carro que realizou a viagem")
     veiculo=pesquisar_veiculos(placa)
+    motorista["viagem_toal"]+=1
     viagem_dados={
         "destino":destino,"origem":origem,"motorista":motorista,"distancia":distancia,"veiculo":veiculo
     }
@@ -251,9 +253,9 @@ def cad_viagem():
 def editar_viagem(codigo):
      codigo_viagem=viagens.get(codigo)
      if codigo_viagem:
-            destino = input('Digite seu nome:')
-            origem= input('Insira seu CPF:')  
-            distancia=input('informe sua cnh') 
+            destino = input('Digite seu destino:')
+            origem= input('Digite a origem:')  
+            distancia=input('informe a distancia percorrida') 
             cpf=input("cpf do motorista que realizou a viagem")
             motorista=pesquisar_motorista(cpf)
             placa=input("informe a placa do carro que realizou a viagem")
@@ -267,18 +269,19 @@ def editar_viagem(codigo):
 def manutencao():
     data=input("informe a data")
     tipo=input("informe o  tipo da viagem")
-    valor=input("informe o valor")
-    placa=input("informe a placa do carro que abasteceu")
+    custo=int(input("informe o valor"))
+    placa=input("informe a placa do carro ")
     veiculo=pesquisar_veiculos(placa)
+
     manutencao={
-       "veiculo":veiculo,"data":data,"tipo":tipo,"valor":valor
+       "veiculo":veiculo,"data":data,"tipo":tipo,"custo":custo
     }
     manutencoes[cod_manutencao]=manutencao
     print("codigo de manutenção",cod_manutencao)
 
 def abastecimento():
 
-    valor=input("informe o valor do abastecimento")
+    valor=int(input("informe o valor do abastecimento"))
     data=input("informe a data do abastecimento")
     quantidade=input("informe a quantidade de abastecimento")
     placa=input("informe a placa do carro que abasteceu")
@@ -290,11 +293,47 @@ def abastecimento():
     abastecimentos[cod_abastec]=abastec
     print("codigo de abastecimento",cod_abastec)
 
+def somar_despesar():
+    soma=0
+    for abastec in abastecimentos.values():
+        soma=soma+abastec["valor"]
+    print("total gasto com abastecimento foi de",soma,"reais" )
+
+ 
+def somar_manutencao():
+    soma1=0
+    for manutecao in manutencoes.values():
+        soma1=soma1+manutecao["custo"]
+    print("total gasto com manutenção foi de",soma1,"reais" )
+
+def maior_km():
+    maior=0
+    for veiculo in veiculos.values():
+        if maior<veiculo["km"]:
+            maior=veiculo["km"]
+            maior_km=veiculo
+    print("Veiculo com mais km é ",maior_km)
+
+def mais_viagens():
+    maior=0
+    for motorista in motoristas.values():
+        if maior<motorista["viagem_total"]:
+            maior=motorista["viagem_total"]
+            mais_viagem=motorista
+    print("O motorista com mais viagens é",mais_viagem)
+
+
+
 
 def relatorio():
    
     print("Quantidade de motoristas",len(motoristas))
     
     print("Quantidade de veiculos",len(veiculos))
+
+    maior_km()
+    somar_despesar()
+    somar_manutencao()
+    mais_viagens()
 
 menu()
