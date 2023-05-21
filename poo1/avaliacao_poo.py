@@ -10,32 +10,62 @@ veiculos={"BCC009":{"marca":"Fiat", "modelo":"UNO", "ano":"2003",
                    "placa":"BCC006", "chassi":"36563652","cor":"Branco","km":500},
          "BCC008":{"marca":"Fiat", "modelo":"Argo", "ano":"2003", 
                    "placa":"BCC007", "chassi":"36563652","cor":"Branco","km":500}  }
-class Veiculos:
-    def __init__(self,marca,modelo,ano,placa,chassi,cor,km):
-        self.marca=marca
-        self.modelo=modelo
-        self.ano=ano
+
+
+class veiculos:
+    def __init__(self,marca,modelo,placa,chassi,cor,km):
+        self.marca = marca
+        self.modelo=  modelo
         self.placa=placa
         self.chassi=chassi
         self.cor=cor
         self.km=km
 
-
-
+class CarrosPequenos(veiculos):
+    def __init__(self,marca,modelo,placa,chassi,cor,km):
+        super.__init__(marca,modelo,placa,chassi,cor,km)
         
 
 
-motoristas={"11111":{"nome":"François", "CPF":"11111", "RG":"223212", "CNH":"34221","viagem_total":2},
-            "22222":{"nome":"Ana", "CPF":"22222", "RG":"223212", "CNH":"34221","viagem_total":3},
-            "33333":{"nome":"MAria", "CPF":"33333", "RG":"223212", "CNH":"34221","viagem_total":2}}
+class CarrosGrandes(veiculos):
+     def __init__(self,marca,modelo,placa,chassi,cor,km):
+        super.__init__(marca,modelo,placa,chassi,cor,km)
 
-class motorista:
-    def __init__(self,nome,cpf,rg,cnh,viagens_total):
-        self.nome=nome
-        self.cpf=cpf
-        self.rg=rg
-        self.cnh=cnh
-        self.viagens_total=viagens_total
+
+class CarroVip(veiculos):
+    def __init__(self,marca,modelo,placa,chassi,cor,km):
+        super.__init__(marca,modelo,placa,chassi,cor,km)
+
+
+
+
+
+
+        
+    def editar_veiculos(self):
+        self.marca = input('Digite a marca do veiculo:')
+        self.modelo= input('Insira seu CPF:')  
+        self.placa=input('informe seu rg')
+        self.chassi=input('informe sua cnh') 
+        self.cor=input('informe a cor do veiculo')
+        self.km=input('Quilometros rodados')
+    
+    def deletar_veiculo(veiculo):
+        placa=veiculo["placa"]
+        del veiculos[placa] 
+        print('veiculo deletado')
+
+motoristas={"11111":{"nome":"François", "CPF":"11111", "RG":"223212", "CNH":"34221"},
+            "22222":{"nome":"Ana", "CPF":"22222", "RG":"223212", "CNH":"34221"},
+            "33333":{"nome":"MAria", "CPF":"33333", "RG":"223212", "CNH":"34221"}}
+
+class Motoristas:
+    def __init__(self) :
+            self.nome = input('Digite seu nome:')
+            self.cpf = input('Insira seu CPF:')  
+            self.rg=input('informe seu rg')
+            self.cnh=input('informe sua cnh') 
+        
 
 viagens={1:{"destino":"Bacabal", 
                 "origem":"Caxias", 
@@ -48,42 +78,46 @@ viagens={1:{"destino":"Bacabal",
                 "motorista":motoristas["11111"], 
                 "veiculo":veiculos["BCC009"]
                }}
-
+ 
 class Viagens:
-    def __init__(self,destino,origem,distancia,motorista,veiculo):
-        self.destino=destino
-        self.origem=origem
-        self.distancia=distancia
-        self.motorista=motorista
-        self.veiculo=veiculo
-
+    def __init__(self):
+        self. destino = input('Digite o destino:')
+        self.origem= input('digite a origem:')  
+        self.distancia=input('distancia da viagem') 
+        self.cpf=input("cpf do motorista que realizou a viagem")
+        self.motorista=pesquisar_motorista(self.cpf)
+        self.placa=input("informe a placa do carro que realizou a viagem")
+        self.veiculo=pesquisar_veiculos(self.placa)
 
 manutencoes ={1:{"veiculo":veiculos["BCC009"],"data":"02-02-2023", "tipo":"preventiva","custo":1000.0},
               2:{"veiculo":veiculos["BCC009"],"data":"02-02-2023", "tipo":"preventiva","custo":1000.0} }
 
+
 class Manutencao:
-    def __init__(self,veiculo,data,tipo,custo):
-        self.veiculo=veiculo
-        self.data=data
-        self.tipo=tipo
-        self.custo=custo
+    def __init__(self):
+        self.data=input("informe a data")
+        self.tipo=input("informe o  tipo da viagem")
+        self.valor=input("informe o valor")
+        self.placa=input("informe a placa do carro que abasteceu")
+        
+            
+
 abastecimentos={1:{"veiculo":veiculos["BCC009"],"valor":400.0,"data":"4-2-2023","quantidade":150},
                2:{"veiculo":veiculos["BCC009"],"valor":400.0,"data":"4-2-2023","quantidade":150},
                3:{"veiculo":veiculos["BCC009"],"valor":400.0,"data":"4-2-2023","quantidade":150},}
 
+
 class Abastecimento:
-    def __init__(self,veiculo,valor,data,quant):
-        self.veiculo=veiculo
-        self.valor=valor
-        self.data=data
-        self.quant=quant
+    def __init__(self):
+        self.valor=input("informe o valor do abastecimento")
+        self.data=input("informe a data do abastecimento")
+        self.quantidade=input("informe a quantidade de abastecimento")
+        self.placa=input("informe a placa do carro que abasteceu")
 
 
 
 
 def menu():
-
-   
     global dados,cod_manutencao,cod_abastec,cont_mot,cont_veiculos
     dados=1
     cod_manutencao=3
@@ -109,25 +143,25 @@ def menu():
             if op=='a':
                 cad_motorista()
                 cont_mot=1
-            if op=='b':
+            elif op=='b':
                 if cont_mot!=0:
                     cpf=input("informe o cpf do motorista que deseja buscar")
                     moto=pesquisar_motorista(cpf)
                     print(moto)
                 
-            if op=='c':
+            elif op=='c':
                 if cont_mot!=0:
                     cpf=input("informe o cpf do motorista que deseja buscar")
                     moto=pesquisar_motorista(cpf)
                     editar_motorista(moto)
-            if op=='d':
+            elif op=='d':
                 if cont_mot!=0:
                     cpf=input("informe o cpf do motorista que deseja buscar")
                     moto=pesquisar_motorista(cpf)
                     deletar_motorista(moto)
             
             pass
-        if opcao == 2:
+        elif opcao == 2:
             op=input("a-Cadastrar Novo veiculo\n"
         "b-Pesquisar veiculo\n"
         "c-Editar veiculo\n"
@@ -137,7 +171,7 @@ def menu():
                     cad_veiculos()
                     cont_veiculos=1
                     pass
-            if op=='b':
+            elif op=='b':
                 if cont_veiculos!=0:
                     placa=input("informe a placa do veiculo que deseja buscar")
                     veiculo=pesquisar_veiculos(placa)
@@ -145,19 +179,19 @@ def menu():
 
                     pass
         
-            if op=='c':
+            elif op=='c':
                 if cont_veiculos!=0:
                     placa=input("informe a placa do veiculo que deseja buscar")
                     veiculo=pesquisar_veiculos(placa)
                     editar_veiculos(veiculo)
                     pass
-            if op=='d':
+            elif op=='d':
                 if cont_veiculos!=0:
                     placa=input("informe a placa do veiculo que deseja buscar")
                     veiculo=pesquisar_veiculos(placa)
                     deletar_veiculo(veiculo)
                     pass
-            if op=='e':
+            elif op=='e':
                 if cont_veiculos!=0:
                     placa=input("informe a placa do veiculo que deseja buscar")
                     veiculo=pesquisar_veiculos(placa)
@@ -166,7 +200,7 @@ def menu():
             
     
             pass
-        if opcao == 3:
+        else:
             op=(input("a-Cadastrar Viagem\n"
 
 "b-Editar Viagem\n"))
@@ -194,7 +228,7 @@ def menu():
                 cod_manutencao+=1
         pass
         if opcao == 6:
-           relatorio()
+           
            pass
     
 
@@ -205,9 +239,8 @@ def cad_motorista():
     rg=input('informe seu rg')
     cnh=input('informe sua cnh') 
 
-
     motorista={
-        "NOME":nome,"CPF":cpf,"RG":rg,"CNH":cnh,"viagem_total":0
+        "NOME":nome,"CPF":cpf,"RG":rg,"CNH":cnh
     }
     motoristas[cpf]=motorista 
     print(motoristas)
@@ -260,9 +293,9 @@ def pesquisar_veiculos(placa):
 def editar_veiculos(veiculo):
 
     marca = input('Digite a marca do veiculo:')
-    modelo= input('Insira o modelo:')  
-    placa=input('informe placa')
-    chassi=input('informe a chassi') 
+    modelo= input('Insira seu CPF:')  
+    placa=input('informe seu rg')
+    chassi=input('informe sua cnh') 
     cor=input('informe a cor do veiculo')
     km=input('Quilometros rodados')
     veiculo={
@@ -287,7 +320,6 @@ def cad_viagem():
     motorista=pesquisar_motorista(cpf)
     placa=input("informe a placa do carro que realizou a viagem")
     veiculo=pesquisar_veiculos(placa)
-    motorista["viagem_toal"]+=1
     viagem_dados={
         "destino":destino,"origem":origem,"motorista":motorista,"distancia":distancia,"veiculo":veiculo
     }
@@ -297,9 +329,9 @@ def cad_viagem():
 def editar_viagem(codigo):
      codigo_viagem=viagens.get(codigo)
      if codigo_viagem:
-            destino = input('Digite seu destino:')
-            origem= input('Digite a origem:')  
-            distancia=input('informe a distancia percorrida') 
+            destino = input('Digite seu nome:')
+            origem= input('Insira seu CPF:')  
+            distancia=input('informe sua cnh') 
             cpf=input("cpf do motorista que realizou a viagem")
             motorista=pesquisar_motorista(cpf)
             placa=input("informe a placa do carro que realizou a viagem")
@@ -313,19 +345,18 @@ def editar_viagem(codigo):
 def manutencao():
     data=input("informe a data")
     tipo=input("informe o  tipo da viagem")
-    custo=int(input("informe o valor"))
-    placa=input("informe a placa do carro ")
+    valor=input("informe o valor")
+    placa=input("informe a placa do carro que abasteceu")
     veiculo=pesquisar_veiculos(placa)
-
     manutencao={
-       "veiculo":veiculo,"data":data,"tipo":tipo,"custo":custo
+       "veiculo":veiculo,"data":data,"tipo":tipo,"valor":valor
     }
     manutencoes[cod_manutencao]=manutencao
     print("codigo de manutenção",cod_manutencao)
 
 def abastecimento():
 
-    valor=int(input("informe o valor do abastecimento"))
+    valor=input("informe o valor do abastecimento")
     data=input("informe a data do abastecimento")
     quantidade=input("informe a quantidade de abastecimento")
     placa=input("informe a placa do carro que abasteceu")
@@ -337,47 +368,11 @@ def abastecimento():
     abastecimentos[cod_abastec]=abastec
     print("codigo de abastecimento",cod_abastec)
 
-def somar_despesar():
-    soma=0
-    for abastec in abastecimentos.values():
-        soma=soma+abastec["valor"]
-    print("total gasto com abastecimento foi de",soma,"reais" )
-
- 
-def somar_manutencao():
-    soma1=0
-    for manutecao in manutencoes.values():
-        soma1=soma1+manutecao["custo"]
-    print("total gasto com manutenção foi de",soma1,"reais" )
-
-def maior_km():
-    maior=0
-    for veiculo in veiculos.values():
-        if maior<veiculo["km"]:
-            maior=veiculo["km"]
-            maior_km=veiculo
-    print("Veiculo com mais km é ",maior_km)
-
-def mais_viagens():
-    maior=0
-    for motorista in motoristas.values():
-        if maior<motorista["viagem_total"]:
-            maior=motorista["viagem_total"]
-            mais_viagem=motorista
-    print("O motorista com mais viagens é",mais_viagem)
-
-
-
 
 def relatorio():
    
     print("Quantidade de motoristas",len(motoristas))
     
     print("Quantidade de veiculos",len(veiculos))
-
-    maior_km()
-    somar_despesar()
-    somar_manutencao()
-    mais_viagens()
 
 menu()
